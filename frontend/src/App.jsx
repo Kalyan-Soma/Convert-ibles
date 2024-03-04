@@ -42,9 +42,9 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
-      <div className="flex items-center justify-center flex-grow">
-        <div className="w-full max-w-md p-5 bg-white rounded-lg shadow">
-          <h1 className="mb-20 text-2xl font-bold text-center text-gray-800">
+      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md p-5 my-4 bg-white rounded-lg shadow md:my-8">
+          <h1 className="mb-16 text-2xl font-bold text-center text-gray-800">
             Currency Converter
           </h1>
           <div className="flex items-center justify-between mb-4">
