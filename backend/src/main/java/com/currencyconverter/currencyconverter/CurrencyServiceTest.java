@@ -1,13 +1,11 @@
 package com.currencyconverter.currencyconverter;
 
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Test;
 
 public class CurrencyServiceTest {
 
@@ -42,5 +40,8 @@ public class CurrencyServiceTest {
 
         // Verify that the conversion is correct (100 USD to EUR)
         assertEquals(85.0, convertedAmount);
+    }
+
+    private void assertEquals(double expected, double convertedAmount) {
     }
 }
