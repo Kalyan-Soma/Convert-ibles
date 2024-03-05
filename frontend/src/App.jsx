@@ -1,69 +1,57 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Footer from "./Footer";
 import Header from "./Header";
+import Footer from "./Footer";
 
 function App() {
-  const [currencies, setCurrencies] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("");
-  const [toCurrency, setToCurrency] = useState("");
+  const [currencies, setCurrencies] = useState(["USD", "EUR", "GBP"]);
+  const [fromCurrency, setFromCurrency] = useState("USD");
+  const [toCurrency, setToCurrency] = useState("EUR");
   const [amount, setAmount] = useState(1);
-  const [convertedAmount, setConvertedAmount] = useState(0);
+  const [convertedAmount, setConvertedAmount] = useState("");
+  const [isFromAmount, setIsFromAmount] = useState(true);
 
-  // Fetch available currencies from the API
   useEffect(() => {
-    const fetchCurrencies = async () => {
-      // Adjust the URL to your API endpoint for fetching currencies
-      const response = await fetch("http://localhost:8080/currencies");
-      const data = await response.json();
-      const currencyCodes = Object.keys(data);
-      setCurrencies(currencyCodes);
-      // Initialize default currencies
-      if (currencyCodes.length > 1) {
-        setFromCurrency(currencyCodes[0]);
-        setToCurrency(currencyCodes[1]);
-      }
-    };
-    fetchCurrencies();
-  }, []);
+    if (amount && fromCurrency && toCurrency) {
+      convertCurrency();
+    }
+  }, [amount, fromCurrency, toCurrency]);
 
   const handleAmountChange = (e, isFrom) => {
-    const value = e.target.value;
-    setAmount(value);
+    setIsFromAmount(isFrom);
     if (isFrom) {
-      convertCurrency(value, fromCurrency, toCurrency);
+      setAmount(e.target.value);
+      setConvertedAmount(""); // Reset or calculate new conversion
     } else {
-      // If you're setting the converted amount manually, you may need a reverse conversion or adjustment here
+      setConvertedAmount(e.target.value);
+      setAmount(""); // Reset or calculate new conversion based on this new input
     }
-  };
-
-  const convertCurrency = async (amount, sourceCurrency, targetCurrency) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/convert?amount=${amount}&sourceCurrency=${sourceCurrency}&targetCurrency=${targetCurrency}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setConvertedAmount(data); // Assuming the backend directly returns the converted amount
-    } catch (error) {
-      console.error("Fetch error:", error);
-    }
+    // Optionally, you could call convertCurrency here directly to update the conversion as the user types
   };
 
   const swapCurrencies = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
-    convertCurrency(amount, toCurrency, fromCurrency);
+    setIsFromAmount(!isFromAmount);
   };
 
-  // Automatically convert currency whenever relevant states change
-  useEffect(() => {
-    if (fromCurrency && toCurrency) {
-      convertCurrency(amount, fromCurrency, toCurrency);
+  const convertCurrency = async () => {
+    console.log("Converting currency...");
+    try {
+      const response = await fetch(
+        `http://localhost:8080/convert?amount=${amount}&sourceCurrency=${fromCurrency}&targetCurrency=${toCurrency}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("Conversion result:", data);
+      // Update this line based on your actual backend response structure
+      setConvertedAmount(data.convertedAmount || "");
+    } catch (error) {
+      console.error("Fetch error:", error);
     }
-  }, [fromCurrency, toCurrency, amount]);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -76,7 +64,7 @@ function App() {
           <div className="flex items-center justify-between mb-4">
             <input
               type="number"
-              value={isFromAmount ? amount : convertedAmount}
+              value={isFromAmount ? amount : convertedAmount || ""}
               onChange={(e) => handleAmountChange(e, true)}
               className="w-2/5 border-gray-300 rounded-lg shadow-sm input input-bordered"
             />
@@ -103,10 +91,10 @@ function App() {
           <div className="flex items-center justify-between">
             <input
               type="number"
-              value={isFromAmount ? convertedAmount : amount}
+              value={!isFromAmount ? amount : convertedAmount || ""}
               onChange={(e) => handleAmountChange(e, false)}
               className="w-2/5 border-gray-300 rounded-lg shadow-sm input input-bordered"
-              readOnly={!isFromAmount}
+              readOnly={isFromAmount}
             />
             <select
               value={toCurrency}
