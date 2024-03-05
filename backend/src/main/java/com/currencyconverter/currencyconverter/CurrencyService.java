@@ -1,6 +1,7 @@
 package com.currencyconverter.currencyconverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.util.Map;
@@ -9,7 +10,9 @@ import java.util.Map;
 public class CurrencyService {
 
     private final RestTemplate restTemplate;
-    private static final String API_URL = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_S4CLk7iNPhAiA8dlHBVQjX1Zf0knyU3EyQORaoX5";
+
+    @Value("${currency.api.url}")
+    private String apiUrl;
 
     @Autowired
     public CurrencyService(RestTemplate restTemplate) {
@@ -17,11 +20,14 @@ public class CurrencyService {
     }
 
     public double convertCurrency(double amount, String sourceCurrency, String targetCurrency) {
-        // Make an HTTP GET request to the API endpoint
-        ExchangeRateResponse response = restTemplate.getForObject(API_URL, ExchangeRateResponse.class);
+        String urlWithParams = apiUrl + "&base_currency=" + sourceCurrency + "&target_currency=" + targetCurrency;
 
-        // Extract the exchange rates for all currencies from the API response
-        Map<String, Double> exchangeRates = response.getRates();
+        // Make an HTTP GET request to the API endpoint
+        ExchangeRateResponse response = restTemplate.getForObject(urlWithParams, ExchangeRateResponse.class);
+
+        // Extract the exchange rates for all currencies from the API response's "data"
+        // field
+        Map<String, Double> exchangeRates = response.getData(); // Updated to use getData()
 
         // Get the exchange rate for the target currency
         double targetExchangeRate = exchangeRates.get(targetCurrency);

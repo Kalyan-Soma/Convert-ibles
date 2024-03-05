@@ -4,40 +4,66 @@ import Footer from "./Footer";
 import Header from "./Header";
 
 function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currencies, setCurrencies] = useState(["USD", "EUR", "GBP"]);
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
+  const [currencies, setCurrencies] = useState([]);
+  const [fromCurrency, setFromCurrency] = useState("");
+  const [toCurrency, setToCurrency] = useState("");
   const [amount, setAmount] = useState(1);
-  const [convertedAmount, setConvertedAmount] = useState();
-  const [isFromAmount, setIsFromAmount] = useState(true);
+  const [convertedAmount, setConvertedAmount] = useState(0);
+
+  // Fetch available currencies from the API
+  useEffect(() => {
+    const fetchCurrencies = async () => {
+      // Adjust the URL to your API endpoint for fetching currencies
+      const response = await fetch("http://localhost:8080/currencies");
+      const data = await response.json();
+      const currencyCodes = Object.keys(data);
+      setCurrencies(currencyCodes);
+      // Initialize default currencies
+      if (currencyCodes.length > 1) {
+        setFromCurrency(currencyCodes[0]);
+        setToCurrency(currencyCodes[1]);
+      }
+    };
+    fetchCurrencies();
+  }, []);
 
   const handleAmountChange = (e, isFrom) => {
-    setIsFromAmount(isFrom);
-    setAmount(e.target.value);
-  };
-
-  const calculateConversion = () => {
-    const conversionRate = 0.85; // Example: USD to EUR
-    if (isFromAmount) {
-      setConvertedAmount(amount * conversionRate);
+    const value = e.target.value;
+    setAmount(value);
+    if (isFrom) {
+      convertCurrency(value, fromCurrency, toCurrency);
     } else {
-      setAmount(convertedAmount / conversionRate);
+      // If you're setting the converted amount manually, you may need a reverse conversion or adjustment here
     }
   };
 
-  useEffect(calculateConversion, [
-    amount,
-    fromCurrency,
-    toCurrency,
-    isFromAmount,
-  ]);
+  const convertCurrency = async (amount, sourceCurrency, targetCurrency) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/convert?amount=${amount}&sourceCurrency=${sourceCurrency}&targetCurrency=${targetCurrency}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setConvertedAmount(data); // Assuming the backend directly returns the converted amount
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
 
   const swapCurrencies = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
-    setIsFromAmount(!isFromAmount);
+    convertCurrency(amount, toCurrency, fromCurrency);
   };
+
+  // Automatically convert currency whenever relevant states change
+  useEffect(() => {
+    if (fromCurrency && toCurrency) {
+      convertCurrency(amount, fromCurrency, toCurrency);
+    }
+  }, [fromCurrency, toCurrency, amount]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
