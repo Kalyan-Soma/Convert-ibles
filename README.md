@@ -12,5 +12,5 @@ Frontend: npm run dev
 Backend: mvnw spring-boot:run
 
 Mac:
-Frontend:
-Backend:
+Frontend: npm run dev
+Backend: ./mvnw spring-boot:run
