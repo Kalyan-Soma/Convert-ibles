@@ -46,8 +46,7 @@ function App() {
       }
       const data = await response.json();
       console.log("Conversion result:", data);
-      // Update this line based on your actual backend response structure
-      setConvertedAmount(data.convertedAmount || "");
+      setConvertedAmount(parseFloat(data.convertedAmount).toFixed(2));
     } catch (error) {
       console.error("Fetch error:", error);
     }

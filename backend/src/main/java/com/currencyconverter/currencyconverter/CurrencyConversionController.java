@@ -1,5 +1,8 @@
 package com.currencyconverter.currencyconverter;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,9 +19,9 @@ public class CurrencyConversionController {
     }
 
     @GetMapping("/convert")
-    public double convertCurrency(@RequestParam double amount,
-            @RequestParam String sourceCurrency,
+    public Map<String, Double> convertCurrency(@RequestParam double amount, @RequestParam String sourceCurrency,
             @RequestParam String targetCurrency) {
-        return currencyService.convertCurrency(amount, sourceCurrency, targetCurrency);
+        double convertedAmount = currencyService.convertCurrency(amount, sourceCurrency, targetCurrency);
+        return Collections.singletonMap("convertedAmount", convertedAmount);
     }
 }
