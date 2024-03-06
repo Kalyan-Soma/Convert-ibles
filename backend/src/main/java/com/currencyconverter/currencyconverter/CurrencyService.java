@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.google.gwt.i18n.client.CurrencyData;
+
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -34,8 +37,8 @@ public class CurrencyService {
 
     public Set<String> getAvailableCurrencies() {
         CurrencyData response = restTemplate.getForObject(apiUrl, CurrencyData.class);
-        if (response != null && response.getData() != null) {
-            return response.getData().keySet();
+        if (response != null && ((ExchangeRateResponse) response).getData() != null) {
+            return ((ExchangeRateResponse) response).getData().keySet();
         }
         return Collections.emptySet();
     }
