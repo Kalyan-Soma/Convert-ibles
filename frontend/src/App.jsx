@@ -4,18 +4,42 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 function App() {
-  const [currencies, setCurrencies] = useState(["USD", "EUR", "GBP"]);
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
-  const [amount, setAmount] = useState(1);
+  const [currencies, setCurrencies] = useState([]);
+  const [fromCurrency, setFromCurrency] = useState("");
+  const [toCurrency, setToCurrency] = useState("");
+  const [amount, setAmount] = useState(50);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
   useEffect(() => {
-    if (amount && fromCurrency && toCurrency) {
+    const fetchCurrencies = async () => {
+      const response = await fetch("http://localhost:8080/currencies");
+      if (!response.ok) throw new Error("Failed to fetch currencies");
+      const currencies = await response.json();
+      currencies.sort();
+      setCurrencies(currencies);
+      const defaultFromCurrency = "USD";
+      const defaultToCurrency = "EUR";
+
+      if (currencies.includes(defaultFromCurrency)) {
+        setFromCurrency(defaultFromCurrency);
+      } else if (currencies.length > 0) {
+        setFromCurrency(currencies[0]);
+      }
+
+      if (currencies.includes(defaultToCurrency)) {
+        setToCurrency(defaultToCurrency);
+      } else if (currencies.length > 1) {
+        setToCurrency(currencies[1]);
+      }
+    };
+    fetchCurrencies();
+  }, []);
+
+  useEffect(() => {
+    if (fromCurrency && toCurrency && (amount || convertedAmount))
       convertCurrency();
-    }
-  }, [amount, fromCurrency, toCurrency]);
+  }, [fromCurrency, toCurrency, amount, convertedAmount, isFromAmount]);
 
   const handleAmountChange = (e, isFrom) => {
     setIsFromAmount(isFrom);
@@ -98,7 +122,7 @@ function App() {
             <select
               value={toCurrency}
               onChange={(e) => setToCurrency(e.target.value)}
-              className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
+              className="w-1/3 border-gray-300 rounded-lg shadow-sm input input-bordered"
             >
               {currencies.map((currency) => (
                 <option key={currency} value={currency}>

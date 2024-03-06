@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.json.JSONObject;
+
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class CurrencyService {
@@ -37,4 +41,13 @@ public class CurrencyService {
 
         return convertedAmount;
     }
+
+    public Set<String> getAvailableCurrencies() {
+        CurrencyData response = restTemplate.getForObject(apiUrl, CurrencyData.class);
+        if (response != null && response.getData() != null) {
+            return response.getData().keySet();
+        }
+        return Collections.emptySet();
+    }
+
 }

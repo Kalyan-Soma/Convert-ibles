@@ -14,7 +14,6 @@ public class AppConfig {
         return new RestTemplate();
     }
 
-    // CORS global configuration
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
