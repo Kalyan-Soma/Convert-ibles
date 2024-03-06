@@ -45,12 +45,11 @@ function App() {
     setIsFromAmount(isFrom);
     if (isFrom) {
       setAmount(e.target.value);
-      setConvertedAmount(""); // Reset or calculate new conversion
+      setConvertedAmount("");
     } else {
       setConvertedAmount(e.target.value);
-      setAmount(""); // Reset or calculate new conversion based on this new input
+      setAmount("");
     }
-    // Optionally, you could call convertCurrency here directly to update the conversion as the user types
   };
 
   const swapCurrencies = () => {
