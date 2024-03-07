@@ -8,7 +8,7 @@ const Homepage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
-      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-center flex-grow px-4 sm:px-6 lg:px-8">
         <h1 className="mb-4 text-4xl font-bold">Welcome to Convert-TING</h1>
         <p className="mb-8">
           Your go-to solution for easy currency conversions.
