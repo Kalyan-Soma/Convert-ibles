@@ -1,4 +1,5 @@
 import React from "react";
+import logoSvg from "./logo.svg"; // Import your SVG logo file
 
 const Header = () => {
   return (
@@ -11,11 +12,8 @@ const Header = () => {
                 href="/converter"
                 className="flex items-center px-2 py-5 text-gray-700 hover:text-gray-900"
               >
-                <img
-                  src="path-to-your-logo.png"
-                  alt=""
-                  className="w-8 h-8 mr-2"
-                />
+                {/* Use the imported SVG file directly */}
+                <img src={logoSvg} alt="Currency Converter Logo" className="w-8 h-8 mr-2" />
                 <span className="font-bold">Currency Converter</span>
               </a>
             </div>
