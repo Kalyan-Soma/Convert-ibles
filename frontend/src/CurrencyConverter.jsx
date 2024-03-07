@@ -121,7 +121,7 @@ function CurrencyConverter() {
             <select
               value={toCurrency}
               onChange={(e) => setToCurrency(e.target.value)}
-              className="w-1/3 border-gray-300 rounded-lg shadow-sm input input-bordered"
+              className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
               {currencies.map((currency) => (
                 <option key={currency} value={currency}>

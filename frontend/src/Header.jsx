@@ -8,7 +8,7 @@ const Header = () => {
           <div className="flex space-x-4">
             <div>
               <a
-                href="#"
+                href="/converter"
                 className="flex items-center px-2 py-5 text-gray-700 hover:text-gray-900"
               >
                 <img
