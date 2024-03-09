@@ -138,4 +138,3 @@ function CurrencyConverter() {
 }
 
 export default CurrencyConverter;
-test;
