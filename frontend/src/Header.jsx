@@ -13,7 +13,11 @@ const Header = () => {
                 className="flex items-center px-2 py-5 text-gray-700 hover:text-gray-900"
               >
                 {/* Use the imported SVG file directly */}
-                <img src={logoSvg} alt="Currency Converter Logo" className="w-8 h-8 mr-2" />
+                <img
+                  src={logoSvg}
+                  alt="Currency Converter Logo"
+                  className="w-8 h-8 mr-2"
+                />
                 <span className="font-bold">Currency Converter</span>
               </a>
             </div>

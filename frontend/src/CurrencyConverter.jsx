@@ -78,8 +78,8 @@ function CurrencyConverter() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
-      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md p-5 my-4 bg-white rounded-lg shadow md:my-8">
+      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-200 via-light-blue-300 to-blue-200">
+        <div className="w-full max-w-md p-5 my-4 bg-white shadow rounded-2xl md:my-8">
           <h1 className="mb-16 text-2xl font-bold text-center text-gray-800">
             Currency Converter
           </h1>
