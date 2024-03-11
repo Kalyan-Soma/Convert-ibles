@@ -1,1 +1,1 @@
-web: java -jar backend/.mvn/wrapper/maven-wrapper.jar
+web: java -jar target/currency-converter-0.0.1-SNAPSHOT.jar
