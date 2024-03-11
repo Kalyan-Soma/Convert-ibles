@@ -15,7 +15,7 @@
     <name>currency-converter</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>17</java.version> <!-- Set the Java version to a supported version -->
+        <java.version>1.8</java.version> <!-- Set the Java version to a supported version -->
     </properties>
     <dependencies>
         <!-- Spring Boot Web Starter -->
