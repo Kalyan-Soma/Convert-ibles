@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.9</version>
+        <version>2.6.3</version> <!-- Adjusted for compatibility with Java 1.8 -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.currency-converter</groupId>
@@ -15,7 +15,7 @@
     <name>currency-converter</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>1.8</java.version> <!-- Set the Java version to a supported version -->
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
         <!-- Spring Boot Web Starter -->
@@ -29,6 +29,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>        
     </dependencies>
     <build>
@@ -36,9 +42,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version> <!-- Ensure you are using a compatible version -->
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.8</source> <!-- Java source compatibility -->
+                    <target>1.8</target> <!-- Java target compatibility -->
                 </configuration>
             </plugin>
             <plugin>
