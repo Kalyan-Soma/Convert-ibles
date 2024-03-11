@@ -19,8 +19,7 @@ public class AppConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                // Allow cross-origin requests to all endpoints in the application
-                registry.addMapping("/**").allowedOrigins("http://localhost:5173"); // Adjust the port if your React app
+                registry.addMapping("/**").allowedOrigins("http://localhost:5173");
             }
         };
     }

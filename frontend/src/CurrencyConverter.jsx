@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Header from "./Header";
-import Footer from "./Footer";
+import logoSvg from "./logo.svg";
 
 function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
@@ -77,7 +76,27 @@ function CurrencyConverter() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      <Header />
+      <nav className="top-0 z-10 w-full bg-white shadow">
+        <div className="max-w-6xl px-4 mx-auto">
+          <div className="flex justify-between">
+            <div className="flex space-x-4">
+              <div>
+                <a
+                  href="/CurrencyConversion"
+                  className="flex items-center px-2 py-5 text-gray-700 hover:text-gray-900"
+                >
+                  <img
+                    src={logoSvg}
+                    alt="Currency Converter Logo"
+                    className="w-8 h-8 mr-2"
+                  />
+                  <span className="font-bold">Currency Converter</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
       <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-200 via-light-blue-300 to-blue-200">
         <div className="w-full max-w-md p-5 my-4 bg-white shadow rounded-2xl md:my-8">
           <h1 className="mb-16 text-2xl font-bold text-center text-gray-800">
@@ -132,7 +151,94 @@ function CurrencyConverter() {
           </div>
         </div>
       </div>
-      <Footer />
+      <footer className="bottom-0 w-full p-4 text-white bg-gray-800">
+        <div className="grid max-w-6xl grid-cols-1 gap-4 mx-auto md:grid-cols-4">
+          <div>
+            <h3 className="mb-2 text-lg font-bold">Currency Converter</h3>
+            <p>
+              Convert currencies with real-time rates and stay up-to-date with
+              the global markets.
+            </p>
+          </div>
+          <div>
+            <h3 className="mb-2 text-lg font-bold">Contributors</h3>
+            <ul>
+              <li>
+                <a href="#" className="hover:underline">
+                  Susreeja Diddi
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  Kalyan Soma
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  Aneesh Prodduturu
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-2 text-lg font-bold">Related Content</h3>
+            <ul>
+              <li>
+                <a href="#" className="hover:underline">
+                  Weight Conversion
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  Length Conversion
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  Speed Conversion
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:underline">
+                  Area Conversion
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-2 text-lg font-bold">Connect</h3>
+            <ul>
+              <li>
+                <a
+                  href="https://github.com/aneeshpavan"
+                  target="_blank"
+                  className="hover:underline"
+                >
+                  @Aneesh on GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/Kalyan-Soma"
+                  target="_blank"
+                  className="hover:underline"
+                >
+                  @Kalyan on GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/susreejadiddi"
+                  target="_blank"
+                  className="hover:underline"
+                >
+                  @Susreeja on GitHub
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

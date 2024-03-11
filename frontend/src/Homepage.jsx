@@ -6,7 +6,7 @@ const Homepage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="px-4 pt-12 pb-4 sm:px-6 lg:px-8">
-        <h1 className="mb-2 text-4xl font-bold text-center">Convertingggg!</h1>
+        <h1 className="mb-2 text-4xl font-bold text-center">Convert-ibles!</h1>
         <p className="mb-6 text-center">
           Your go-to solution for easy conversions.
         </p>
@@ -35,7 +35,7 @@ const Homepage = () => {
               </span>
             </div>
             <div className="flex justify-center px-6 py-4">
-              <Link to="/converter">
+              <Link to="/CurrencyConversion">
                 <button
                   type="button"
                   className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
@@ -101,7 +101,7 @@ const Homepage = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  Loading...
+                  Coming Soon
                 </button>
               </Link>
             </div>
@@ -148,7 +148,7 @@ const Homepage = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  Loading...
+                  Coming Soon
                 </button>
               </Link>
             </div>
@@ -198,7 +198,7 @@ const Homepage = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  Loading...
+                  Coming Soon
                 </button>
               </Link>
             </div>
@@ -248,7 +248,7 @@ const Homepage = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  Loading...
+                  Coming Soon
                 </button>
               </Link>
             </div>
