@@ -1,1 +1,1 @@
-web: java -jar /Convert-ibles/backend/.mvn/wrapper/maven-wrapper.jar
+web: java -jar target/myapp-1.0.0.jar
