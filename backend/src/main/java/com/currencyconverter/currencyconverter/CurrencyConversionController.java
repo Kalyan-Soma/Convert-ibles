@@ -20,8 +20,9 @@ public class CurrencyConversionController {
     }
 
     @GetMapping("/convert")
-    public Map<String, Double> convertCurrency(@RequestParam double amount, @RequestParam String sourceCurrency,
-            @RequestParam String targetCurrency) {
+    public Map<String, Double> convertCurrency(@RequestParam @Min(0) double amount,
+            @RequestParam @NotBlank String sourceCurrency,
+            @RequestParam @NotBlank String targetCurrency) {
         double convertedAmount = currencyService.convertCurrency(amount, sourceCurrency, targetCurrency);
         return Collections.singletonMap("convertedAmount", convertedAmount);
     }
