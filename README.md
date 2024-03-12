@@ -1,6 +1,6 @@
-# Convert-Biles 🌟
+# Convert-ibles 🌟
 
-Welcome to Convert-Biles 🚀, the ultimate destination for all your conversion needs. With our comprehensive suite of tools, converting weights, currencies, and much more has never been easier. Dive in and experience the most accurate and up-to-date conversion solutions at your fingertips.
+Welcome to Convert-ibles 🚀, the ultimate destination for all your conversion needs. With our comprehensive suite of tools, converting weights, currencies, and much more has never been easier. Dive in and experience the most accurate and up-to-date conversion solutions at your fingertips.
 
 ## Features 🎉
 
@@ -16,7 +16,7 @@ Welcome to Convert-Biles 🚀, the ultimate destination for all your conversion 
 
 ## Getting Started 🚀
 
-To embark on your hassle-free conversion journey, simply navigate to our [website](#), select the conversion tool you need, input the required information, and let Convert-Biles do the magic. It's that simple!
+To embark on your hassle-free conversion journey, simply navigate to our [website](#), select the conversion tool you need, input the required information, and let Convert-ibles do the magic. It's that simple!
 
 ## Technologies Used 🛠️
 
@@ -27,7 +27,7 @@ To embark on your hassle-free conversion journey, simply navigate to our [websit
 
 ## Contributing 🤝
 
-Interested in making Convert-Biles even better? We welcome contributions! Here's how you can help:
+Interested in making Convert-ibles even better? We welcome contributions! Here's how you can help:
 
 1. Fork the repository 🍴.
 2. Create a new branch for your feature (`git checkout -b feature/AmazingFeature`) 🌿.
@@ -44,4 +44,4 @@ This project is sprinkled with love and licensed under the MIT License - see the
 - A big shoutout to all the APIs and open-source tools that empower this project 🛠️.
 - Immense gratitude to the community for its continuous support and contributions ❤️.
 
-Dive into Convert-Biles today and experience conversion magic like never before! ✨
+Dive into Convert-ibles today and experience conversion magic like never before! ✨
