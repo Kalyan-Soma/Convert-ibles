@@ -10,8 +10,8 @@ function CurrencyConverter() {
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  // import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:8080";
+  const apiUrl =
+    import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:8080";
 
   useEffect(() => {
     const fetchCurrencies = async () => {
