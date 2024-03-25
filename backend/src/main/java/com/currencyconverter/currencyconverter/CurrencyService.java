@@ -14,7 +14,7 @@ public class CurrencyService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${currency.api.url}")
+    @Value("${CURRENCY_API_URL}")
     private String apiUrl;
 
     @Autowired
