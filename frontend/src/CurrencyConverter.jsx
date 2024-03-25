@@ -6,38 +6,35 @@ function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
-  const [amount, setAmount] = useState(50);
+  const [amount, setAmount] = useState(1);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
+  const apiUrl =
+    import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:8080";
+
   useEffect(() => {
     const fetchCurrencies = async () => {
-      const response = await fetch("http://localhost:8080/currencies");
-      if (!response.ok) throw new Error("Failed to fetch currencies");
-      const currencies = await response.json();
-      currencies.sort();
-      setCurrencies(currencies);
-      const defaultFromCurrency = "USD";
-      const defaultToCurrency = "EUR";
-
-      if (currencies.includes(defaultFromCurrency)) {
-        setFromCurrency(defaultFromCurrency);
-      } else if (currencies.length > 0) {
-        setFromCurrency(currencies[0]);
-      }
-
-      if (currencies.includes(defaultToCurrency)) {
-        setToCurrency(defaultToCurrency);
-      } else if (currencies.length > 1) {
-        setToCurrency(currencies[1]);
+      try {
+        const response = await fetch(`${apiUrl}/currencies`);
+        if (!response.ok) throw new Error("Failed to fetch currencies");
+        const currencies = await response.json();
+        currencies.sort();
+        setCurrencies(currencies);
+        setFromCurrency(currencies.includes("USD") ? "USD" : currencies[0]);
+        setToCurrency(currencies.includes("EUR") ? "EUR" : currencies[1]);
+      } catch (error) {
+        console.error("Error fetching currencies:", error);
       }
     };
+
     fetchCurrencies();
-  }, []);
+  }, [apiUrl]);
 
   useEffect(() => {
-    if (fromCurrency && toCurrency && (amount || convertedAmount))
+    if (fromCurrency && toCurrency && (amount || convertedAmount)) {
       convertCurrency();
+    }
   }, [fromCurrency, toCurrency, amount, convertedAmount, isFromAmount]);
 
   const handleAmountChange = (e, isFrom) => {
@@ -61,14 +58,20 @@ function CurrencyConverter() {
     console.log("Converting currency...");
     try {
       const response = await fetch(
-        `http://localhost:8080/convert?amount=${amount}&sourceCurrency=${fromCurrency}&targetCurrency=${toCurrency}`
+        `${apiUrl}/convert?amount=${
+          isFromAmount ? amount : convertedAmount
+        }&sourceCurrency=${fromCurrency}&targetCurrency=${toCurrency}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
       console.log("Conversion result:", data);
-      setConvertedAmount(parseFloat(data.convertedAmount).toFixed(2));
+      if (isFromAmount) {
+        setConvertedAmount(parseFloat(data.convertedAmount).toFixed(2));
+      } else {
+        setAmount(parseFloat(data.convertedAmount).toFixed(2));
+      }
     } catch (error) {
       console.error("Fetch error:", error);
     }
