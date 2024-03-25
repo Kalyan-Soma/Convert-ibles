@@ -6,7 +6,7 @@ function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
-  const [amount, setAmount] = useState(40);
+  const [amount, setAmount] = useState(30);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
