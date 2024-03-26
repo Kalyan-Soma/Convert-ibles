@@ -3,6 +3,7 @@ package com.currencyconverter.currencyconverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -37,11 +38,20 @@ public class CurrencyService {
     }
 
     public Set<String> getAvailableCurrencies() {
-        Map<String, Object> apiResponse = restTemplate.getForObject(apiUrl, Map.class);
-        if (apiResponse == null || !apiResponse.containsKey("data")) {
+        try {
+            Map<String, Object> apiResponse = restTemplate.getForObject(apiUrl, Map.class);
+            if (apiResponse == null || !apiResponse.containsKey("data")) {
+                // Log an error or throw a custom exception
+                throw new RuntimeException("API response is invalid or does not contain 'data'.");
+            }
+            Map<String, Double> currencyData = (Map<String, Double>) apiResponse.get("data");
+            return currencyData.keySet();
+        } catch (RestClientException e) {
+            // Log this exception with a logging framework or simple print statement
+            // For production, use a logger to log this error
+            System.out.println("Exception when fetching currencies: " + e.getMessage());
+            // Consider returning a custom error response or throw a custom exception
             return Collections.emptySet();
         }
-        Map<String, Double> currencyData = (Map<String, Double>) apiResponse.get("data");
-        return currencyData.keySet();
     }
 }

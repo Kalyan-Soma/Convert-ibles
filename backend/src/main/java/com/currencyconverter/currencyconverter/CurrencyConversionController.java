@@ -5,9 +5,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
@@ -30,7 +33,17 @@ public class CurrencyConversionController {
     }
 
     @GetMapping("/currencies")
-    public Set<String> getAvailableCurrencies() {
-        return currencyService.getAvailableCurrencies();
+    public ResponseEntity<Set<String>> getAvailableCurrencies() {
+        try {
+            Set<String> currencies = currencyService.getAvailableCurrencies();
+            return new ResponseEntity<>(currencies, HttpStatus.OK);
+        } catch (Exception e) {
+            // Log the exception here as per your logging setup.
+            // For example:
+            System.out.println("Failed to fetch available currencies: " + e.getMessage());
+
+            // Respond with a '500 Internal Server Error' and a message
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching currencies", e);
+        }
     }
 }
