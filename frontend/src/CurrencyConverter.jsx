@@ -18,8 +18,7 @@ function CurrencyConverter() {
       try {
         const response = await fetch(`${apiUrl}/currencies`);
         if (!response.ok) throw new Error("Failed to fetch currencies");
-        const data = await response.json();
-        const currenciesArray = Array.from(data); // Convert to array if necessary
+        const currenciesArray = await response.json(); // Directly parsing the response as an array
         currenciesArray.sort();
         setCurrencies(currenciesArray);
         setFromCurrency(
