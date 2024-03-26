@@ -18,11 +18,16 @@ function CurrencyConverter() {
       try {
         const response = await fetch(`${apiUrl}/currencies`);
         if (!response.ok) throw new Error("Failed to fetch currencies");
-        const currencies = await response.json();
-        currencies.sort();
-        setCurrencies(currencies);
-        setFromCurrency(currencies.includes("USD") ? "USD" : currencies[0]);
-        setToCurrency(currencies.includes("EUR") ? "EUR" : currencies[1]);
+        const data = await response.json();
+        const currenciesArray = Array.from(data); // Convert to array if necessary
+        currenciesArray.sort();
+        setCurrencies(currenciesArray);
+        setFromCurrency(
+          currenciesArray.includes("USD") ? "USD" : currenciesArray[0]
+        );
+        setToCurrency(
+          currenciesArray.includes("EUR") ? "EUR" : currenciesArray[1]
+        );
       } catch (error) {
         console.error("Error fetching currencies:", error);
       }
