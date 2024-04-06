@@ -38,6 +38,11 @@ public class CurrencyService {
         }
     }
 
+    public Set<String> getAvailableWeightUnits() {
+        // Return a set of available weight units
+        return new HashSet<>(Arrays.asList("kg", "g", "lb", "oz"));
+    }
+
     public double convertCurrency(double amount, String sourceCurrency, String targetCurrency) {
         try {
             // Construct the URL with the selected source currency
@@ -64,12 +69,15 @@ public class CurrencyService {
         }
     }
 
+<<<<<<< Updated upstream
     public Set<String> getAvailableUnits() {
         // This method should return a set of available weight units
         // Implement the logic to fetch available units from your data source or define them statically
         return new HashSet<>(Arrays.asList("kg", "g", "lb", "oz"));
     }
 
+=======
+>>>>>>> Stashed changes
     // Weight Conversion Service
     public double convertWeight(double amount, String sourceUnit, String targetUnit) {
         // Ensure source and target units are valid
