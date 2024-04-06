@@ -4,8 +4,8 @@ import logoSvg from "./logo.svg";
 
 function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("");
-  const [toCurrency, setToCurrency] = useState("");
+  const [fromCurrency, setFromCurrency] = useState("usd");
+  const [toCurrency, setToCurrency] = useState("eur");
   const [amount, setAmount] = useState(30);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
@@ -18,15 +18,19 @@ function CurrencyConverter() {
       try {
         const response = await fetch(`${apiUrl}/currencies`);
         if (!response.ok) throw new Error("Failed to fetch currencies");
-        const currenciesArray = await response.json(); // Directly parsing the response as an array
-        currenciesArray.sort();
+        const currenciesArray = await response.json();
         setCurrencies(currenciesArray);
-        setFromCurrency(
-          currenciesArray.includes("USD") ? "USD" : currenciesArray[0]
-        );
-        setToCurrency(
-          currenciesArray.includes("EUR") ? "EUR" : currenciesArray[1]
-        );
+
+        // After fetching, check if USD and EUR are in the list and set them as defaults
+        const defaultFromCurrency = currenciesArray.includes("usd")
+          ? "usd"
+          : currenciesArray[0];
+        const defaultToCurrency = currenciesArray.includes("eur")
+          ? "eur"
+          : currenciesArray[1];
+
+        setFromCurrency(defaultFromCurrency);
+        setToCurrency(defaultToCurrency);
       } catch (error) {
         console.error("Error fetching currencies:", error);
       }
@@ -123,7 +127,7 @@ function CurrencyConverter() {
             >
               {currencies.map((currency) => (
                 <option key={currency} value={currency}>
-                  {currency}
+                  {currency.toUpperCase()}
                 </option>
               ))}
             </select>
@@ -151,7 +155,7 @@ function CurrencyConverter() {
             >
               {currencies.map((currency) => (
                 <option key={currency} value={currency}>
-                  {currency}
+                  {currency.toUpperCase()}
                 </option>
               ))}
             </select>
