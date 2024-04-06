@@ -4,9 +4,9 @@ import logoSvg from "./logo.svg";
 
 function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("btc");
-  const [toCurrency, setToCurrency] = useState("usd");
-  const [amount, setAmount] = useState(1);
+  const [fromCurrency, setFromCurrency] = useState("usd");
+  const [toCurrency, setToCurrency] = useState("eur");
+  const [amount, setAmount] = useState(15);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
@@ -18,16 +18,31 @@ function CurrencyConverter() {
       try {
         const response = await fetch(`${apiUrl}/currencies`);
         if (!response.ok) throw new Error("Failed to fetch currencies");
-        const currenciesArray = await response.json();
+        let currenciesArray = await response.json();
+
+        const includedCurrencies = [
+          "USD",
+          "EUR",
+          "GBP",
+          "JPY",
+          "CAD",
+          "AUD",
+          "CNY",
+          "INR",
+        ];
+
+        currenciesArray = currenciesArray.filter((currency) =>
+          includedCurrencies.includes(currency.toUpperCase())
+        );
+
         setCurrencies(currenciesArray);
 
-        const defaultFromCurrency = currenciesArray.includes("btc")
-          ? "btc"
-          : currenciesArray[0];
-        const defaultToCurrency = currenciesArray.includes("usd")
+        const defaultFromCurrency = currenciesArray.includes("usd")
           ? "usd"
+          : currenciesArray[0];
+        const defaultToCurrency = currenciesArray.includes("eur")
+          ? "eur"
           : currenciesArray[1];
-
         setFromCurrency(defaultFromCurrency);
         setToCurrency(defaultToCurrency);
       } catch (error) {
@@ -92,7 +107,7 @@ function CurrencyConverter() {
             <div className="flex space-x-4">
               <div>
                 <a
-                  href="/CurrencyConversion"
+                  href="/ActualCurrencyConversion"
                   className="flex items-center px-2 py-5 text-gray-700 hover:text-gray-900"
                 >
                   <img
@@ -100,17 +115,17 @@ function CurrencyConverter() {
                     alt="Currency Converter Logo"
                     className="w-8 h-8 mr-2"
                   />
-                  <span className="font-bold">Currency & Crypto Converter</span>
+                  <span className="font-bold">Currency Converter</span>
                 </a>
               </div>
             </div>
           </div>
         </div>
       </nav>
-      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-teal-200 via-teal-300 to-green-300">
+      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-200 via-light-blue-300 to-blue-200">
         <div className="w-full max-w-md p-5 my-4 bg-white shadow rounded-2xl md:my-8">
           <h1 className="mb-16 text-2xl font-bold text-center text-gray-800">
-            Currency & Crypto Converter
+            Currency Converter
           </h1>
           <div className="flex items-center justify-between mb-4">
             <input
@@ -164,12 +179,10 @@ function CurrencyConverter() {
       <footer className="bottom-0 w-full p-4 text-white bg-gray-800">
         <div className="grid max-w-6xl grid-cols-1 gap-4 mx-auto md:grid-cols-4">
           <div>
-            <h3 className="mb-2 text-lg font-bold">
-              Currency & Crypto Converter
-            </h3>
+            <h3 className="mb-2 text-lg font-bold">Currency Converter</h3>
             <p>
-              Convert both traditional and crypto currencies with real-time
-              rates and stay up-to-date with the global markets.
+              Convert currencies with real-time rates and stay up-to-date with
+              the global markets.
             </p>
           </div>
           <div>

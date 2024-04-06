@@ -28,14 +28,11 @@ const Homepage = () => {
                 #CurrencyExchange
               </span>
               <span className="inline-block px-3 py-1 mb-2 mr-2 text-xs font-semibold text-gray-700 bg-gray-200 rounded-full">
-                #Forex
-              </span>
-              <span className="inline-block px-3 py-1 mb-2 mr-2 text-xs font-semibold text-gray-700 bg-gray-200 rounded-full">
-                #TravelMoney
+                #GlobalFinance
               </span>
             </div>
             <div className="flex justify-center px-6 py-4">
-              <Link to="/CurrencyConversion">
+              <Link to="/ActualCurrencyConversion">
                 <button
                   type="button"
                   className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
@@ -249,6 +246,52 @@ const Homepage = () => {
                     />
                   </svg>
                   Coming Soon
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="max-w-sm overflow-hidden shadow-lg rounded-2xl bg-gradient-to-r from-teal-200 via-teal-300 to-green-300">
+            <div className="px-6 py-4 bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-t-2xl">
+              <div className="mb-2 text-xl font-bold text-gray-900">
+                Currency & Crypto Conversion
+              </div>
+              <p className="text-gray-700">
+                Convert both traditional and crypto currencies with real-time
+                rates and stay up-to-date with the global markets.
+              </p>
+            </div>
+            <div className="px-6 pt-4 pb-2">
+              <span className="inline-block px-3 py-1 mb-2 mr-2 text-xs font-semibold text-gray-700 bg-gray-200 rounded-full">
+                #Forex
+              </span>
+              <span className="inline-block px-3 py-1 mb-2 mr-2 text-xs font-semibold text-gray-700 bg-gray-200 rounded-full">
+                #CurrencyExchange
+              </span>
+              <span className="inline-block px-3 py-1 mb-2 mr-2 text-xs font-semibold text-gray-700 bg-gray-200 rounded-full">
+                #TravelMoney
+              </span>
+            </div>
+            <div className="flex justify-center px-6 py-4">
+              <Link to="/CurrencyConversion">
+                <button
+                  type="button"
+                  className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+                >
+                  Let's Convert
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    ></path>
+                  </svg>
                 </button>
               </Link>
             </div>
