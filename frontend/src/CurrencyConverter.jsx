@@ -5,8 +5,8 @@ import logoSvg from "./logo.svg";
 function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
   const [fromCurrency, setFromCurrency] = useState("usd");
-  const [toCurrency, setToCurrency] = useState("eur");
-  const [amount, setAmount] = useState(30);
+  const [toCurrency, setToCurrency] = useState("inr");
+  const [amount, setAmount] = useState(1);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
@@ -24,8 +24,8 @@ function CurrencyConverter() {
         const defaultFromCurrency = currenciesArray.includes("usd")
           ? "usd"
           : currenciesArray[0];
-        const defaultToCurrency = currenciesArray.includes("eur")
-          ? "eur"
+        const defaultToCurrency = currenciesArray.includes("inr")
+          ? "inr"
           : currenciesArray[1];
 
         setFromCurrency(defaultFromCurrency);
