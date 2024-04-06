@@ -4,8 +4,8 @@ import logoSvg from "./logo.svg";
 
 function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
+  const [fromCurrency, setFromCurrency] = useState("usd");
+  const [toCurrency, setToCurrency] = useState("eur");
   const [amount, setAmount] = useState(30);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
@@ -21,11 +21,11 @@ function CurrencyConverter() {
         const currenciesArray = await response.json();
         setCurrencies(currenciesArray);
 
-        const defaultFromCurrency = currenciesArray.includes("USD")
-          ? "USD"
+        const defaultFromCurrency = currenciesArray.includes("usd")
+          ? "usd"
           : currenciesArray[0];
-        const defaultToCurrency = currenciesArray.includes("EUR")
-          ? "EUR"
+        const defaultToCurrency = currenciesArray.includes("eur")
+          ? "eur"
           : currenciesArray[1];
 
         setFromCurrency(defaultFromCurrency);
@@ -125,7 +125,7 @@ function CurrencyConverter() {
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
               {currencies.map((currency) => (
-                <option key={currency} value={currency.toUpperCase()}>
+                <option key={currency} value={currency}>
                   {currency.toUpperCase()}
                 </option>
               ))}
@@ -153,7 +153,7 @@ function CurrencyConverter() {
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
               {currencies.map((currency) => (
-                <option key={currency} value={currency.toUpperCase()}>
+                <option key={currency} value={currency}>
                   {currency.toUpperCase()}
                 </option>
               ))}
