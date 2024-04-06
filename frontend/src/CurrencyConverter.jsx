@@ -4,8 +4,8 @@ import logoSvg from "./logo.svg";
 
 function CurrencyConverter() {
   const [currencies, setCurrencies] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("usd");
-  const [toCurrency, setToCurrency] = useState("eur");
+  const [fromCurrency, setFromCurrency] = useState("USD");
+  const [toCurrency, setToCurrency] = useState("EUR");
   const [amount, setAmount] = useState(30);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
@@ -21,12 +21,11 @@ function CurrencyConverter() {
         const currenciesArray = await response.json();
         setCurrencies(currenciesArray);
 
-        // After fetching, check if USD and EUR are in the list and set them as defaults
-        const defaultFromCurrency = currenciesArray.includes("usd")
-          ? "usd"
+        const defaultFromCurrency = currenciesArray.includes("USD")
+          ? "USD"
           : currenciesArray[0];
-        const defaultToCurrency = currenciesArray.includes("eur")
-          ? "eur"
+        const defaultToCurrency = currenciesArray.includes("EUR")
+          ? "EUR"
           : currenciesArray[1];
 
         setFromCurrency(defaultFromCurrency);
@@ -126,7 +125,7 @@ function CurrencyConverter() {
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
               {currencies.map((currency) => (
-                <option key={currency} value={currency}>
+                <option key={currency} value={currency.toUpperCase()}>
                   {currency.toUpperCase()}
                 </option>
               ))}
@@ -154,7 +153,7 @@ function CurrencyConverter() {
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
               {currencies.map((currency) => (
-                <option key={currency} value={currency}>
+                <option key={currency} value={currency.toUpperCase()}>
                   {currency.toUpperCase()}
                 </option>
               ))}
