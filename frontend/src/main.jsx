@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage";
 import CurrencyConverter from "./CurrencyConverter";
 import ActualCurrencyConverter from "./ActualCurrencyConverter";
-import WeightConverter from "./WeightConversion"; // Import WeightConverter component
+import WeightConverter from "./WeightConversion";
 import "./App.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -19,10 +19,7 @@ const App = () => (
           path="/ActualCurrencyConversion"
           element={<ActualCurrencyConverter />}
         />
-        <Route
-          path="/WeightConversion" // Define route for weight conversion
-          element={<WeightConverter />} // Render WeightConverter component
-        />
+        <Route path="/WeightConversion" element={<WeightConverter />} />
       </Routes>
     </Router>
   </React.StrictMode>

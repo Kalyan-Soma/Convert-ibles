@@ -15,21 +15,35 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-public class CurrencyConversionController {
+public class ConversionController {
 
     private final CurrencyService currencyService;
+    private final WeightConversionService weightConversionService;
 
     @Autowired
-    public CurrencyConversionController(CurrencyService currencyService) {
+    public ConversionController(CurrencyService currencyService, WeightConversionService weightConversionService) {
         this.currencyService = currencyService;
+        this.weightConversionService = weightConversionService;
     }
 
-    @GetMapping("/convert")
+    @GetMapping("/convert/currency")
     public Map<String, Double> convertCurrency(@RequestParam @Min(0) double amount,
             @RequestParam @NotBlank String sourceCurrency,
             @RequestParam @NotBlank String targetCurrency) {
         double convertedAmount = currencyService.convertCurrency(amount, sourceCurrency, targetCurrency);
         return Collections.singletonMap("convertedAmount", convertedAmount);
+    }
+
+    @GetMapping("/convert/weight")
+    public ResponseEntity<?> convertWeight(@RequestParam double amount,
+            @RequestParam @NotBlank String sourceUnit,
+            @RequestParam @NotBlank String targetUnit) {
+        try {
+            double convertedAmount = weightConversionService.convertWeight(amount, sourceUnit, targetUnit);
+            return ResponseEntity.ok(Collections.singletonMap("convertedAmount", convertedAmount));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error in conversion: " + e.getMessage());
+        }
     }
 
     @GetMapping("/currencies")
@@ -38,11 +52,7 @@ public class CurrencyConversionController {
             Set<String> currencies = currencyService.getAvailableCurrencies();
             return new ResponseEntity<>(currencies, HttpStatus.OK);
         } catch (Exception e) {
-            // Log the exception here as per your logging setup.
-            // For example:
             System.out.println("Failed to fetch available currencies: " + e.getMessage());
-
-            // Respond with a '500 Internal Server Error' and a message
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching currencies", e);
         }
     }

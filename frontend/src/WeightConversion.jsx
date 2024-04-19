@@ -1,63 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 import logoSvg from "./logo.svg";
 
 function WeightConverter() {
-  // Define available weight units
   const units = ["kg", "g", "lb", "oz"];
-
-  const [fromUnit, setFromUnit] = useState("kg");
-  const [toUnit, setToUnit] = useState("lb");
+  const [sourceUnit, setSourceUnit] = useState("kg");
+  const [targetUnit, setTargetUnit] = useState("lb");
   const [amount, setAmount] = useState(0.1);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
-  // Weight conversion function
-  const convertWeight = (amount, sourceUnit, targetUnit) => {
-    const unitConversions = {
-      kg: {
-        g: amount * 1000,
-        lb: amount * 2.20462,
-        oz: amount * 35.274,
-      },
-      g: {
-        kg: amount / 1000,
-        lb: amount / 453.592,
-        oz: amount / 28.3495,
-      },
-      lb: {
-        kg: amount / 2.20462,
-        g: amount * 453.592,
-        oz: amount * 16,
-      },
-      oz: {
-        kg: amount / 35.274,
-        g: amount * 28.3495,
-        lb: amount / 16,
-      },
+  useEffect(() => {
+    const performConversion = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/convert/weight`,
+          {
+            params: {
+              amount: isFromAmount ? amount : convertedAmount,
+              sourceUnit: isFromAmount ? sourceUnit : targetUnit,
+              targetUnit: isFromAmount ? targetUnit : sourceUnit,
+            },
+          }
+        );
+        if (response.data && response.data.convertedAmount !== undefined) {
+          const result = response.data.convertedAmount.toFixed(2);
+          if (isFromAmount) {
+            setConvertedAmount(result);
+          } else {
+            setAmount(result);
+          }
+        }
+      } catch (error) {
+        console.error("Error during conversion", error);
+        if (isFromAmount) {
+          setConvertedAmount("Error");
+        } else {
+          setAmount("Error");
+        }
+      }
     };
 
-    return unitConversions[sourceUnit][targetUnit];
-  };
+    performConversion();
+  }, [amount, sourceUnit, targetUnit, convertedAmount, isFromAmount]);
 
   const handleAmountChange = (e, isFrom) => {
+    const value = e.target.value;
     setIsFromAmount(isFrom);
     if (isFrom) {
-      setAmount(e.target.value);
-      setConvertedAmount(
-        convertWeight(e.target.value, fromUnit, toUnit).toFixed(2)
-      );
+      setAmount(value);
     } else {
-      setConvertedAmount(e.target.value);
-      setAmount(convertWeight(e.target.value, toUnit, fromUnit).toFixed(2));
+      setConvertedAmount(value);
     }
   };
 
-  const swapUnits = () => {
-    setFromUnit(toUnit);
-    setToUnit(fromUnit);
-    setIsFromAmount(!isFromAmount);
-    setAmount(convertedAmount);
+  const swapUnits = async () => {
+    console.log(`Swapping units: ${sourceUnit} to ${targetUnit}`);
+    const newSourceUnit = targetUnit;
+    const newTargetUnit = sourceUnit;
+    const newAmount = convertedAmount;
+
+    setSourceUnit(newSourceUnit);
+    setTargetUnit(newTargetUnit);
+
+    try {
+      const response = await axios.get(`/convert/weight`, {
+        params: {
+          amount: newAmount,
+          sourceUnit: newSourceUnit,
+          targetUnit: newTargetUnit,
+        },
+      });
+      if (response.data && response.data.convertedAmount !== undefined) {
+        setAmount(newAmount);
+        setConvertedAmount(response.data.convertedAmount.toFixed(2));
+      }
+    } catch (error) {
+      console.error("Error during conversion after swap", error);
+      setConvertedAmount("Error");
+    }
   };
 
   return (
@@ -96,8 +118,8 @@ function WeightConverter() {
               className="w-2/5 border-gray-300 rounded-lg shadow-sm input input-bordered"
             />
             <select
-              value={fromUnit}
-              onChange={(e) => setFromUnit(e.target.value)}
+              value={sourceUnit}
+              onChange={(e) => setSourceUnit(e.target.value)}
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
               {units.map((unit) => (
@@ -107,14 +129,12 @@ function WeightConverter() {
               ))}
             </select>
           </div>
-
           <button
             onClick={swapUnits}
             className="px-2 py-1 mb-4 text-gray-800 bg-gray-200 rounded-full btn hover:bg-gray-300"
           >
             Swap
           </button>
-
           <div className="flex items-center justify-between">
             <input
               type="number"
@@ -123,8 +143,8 @@ function WeightConverter() {
               className="w-2/5 border-gray-300 rounded-lg shadow-sm input input-bordered"
             />
             <select
-              value={toUnit}
-              onChange={(e) => setToUnit(e.target.value)}
+              value={targetUnit}
+              onChange={(e) => setTargetUnit(e.target.value)}
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
               {units.map((unit) => (

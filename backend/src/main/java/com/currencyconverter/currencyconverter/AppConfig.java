@@ -19,8 +19,13 @@ public class AppConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:5174",
-                        "https://convert-ibles-7b8a375de4db.herokuapp.com/");
+                registry.addMapping("/**")
+                        .allowedOrigins(
+                                "http://localhost:5173",
+                                "https://convert-ibles-7b8a375de4db.herokuapp.com")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }

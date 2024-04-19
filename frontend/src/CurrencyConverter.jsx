@@ -65,7 +65,7 @@ function CurrencyConverter() {
     console.log("Converting currency...");
     try {
       const response = await fetch(
-        `${apiUrl}/convert?amount=${
+        `${apiUrl}/convert/currency?amount=${
           isFromAmount ? amount : convertedAmount
         }&sourceCurrency=${fromCurrency}&targetCurrency=${toCurrency}`
       );

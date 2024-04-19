@@ -15,7 +15,7 @@ function App() {
           path="/ActualCurrencyConversion"
           element={<ActualCurrencyConverter />}
         />
-        <Route path="/WeightConversion" element={<WeightConverter />} /> {/* Add the route for the WeightConverter component */}
+        <Route path="/WeightConversion" element={<WeightConverter />} />
       </Routes>
     </div>
   );
