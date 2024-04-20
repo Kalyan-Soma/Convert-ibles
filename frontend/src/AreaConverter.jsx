@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 import logoSvg from "./logo.svg";
 
-function CurrencyConverter() {
-  const [currencies, setCurrencies] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("btc");
-  const [toCurrency, setToCurrency] = useState("usd");
-  const [amount, setAmount] = useState(1);
+function AreaConverter() {
+  const units = ["sq m", "sq km", "sq mi"];
+  const [sourceUnit, setSourceUnit] = useState("sq km");
+  const [targetUnit, setTargetUnit] = useState("sq mi");
+  const [amount, setAmount] = useState(5);
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
@@ -14,73 +15,70 @@ function CurrencyConverter() {
     import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:8080";
 
   useEffect(() => {
-    const fetchCurrencies = async () => {
+    const performConversion = async () => {
       try {
-        const response = await fetch(`${apiUrl}/currencies`);
-        if (!response.ok) throw new Error("Failed to fetch currencies");
-        const currenciesArray = await response.json();
-        setCurrencies(currenciesArray);
-
-        const defaultFromCurrency = currenciesArray.includes("btc")
-          ? "btc"
-          : currenciesArray[0];
-        const defaultToCurrency = currenciesArray.includes("usd")
-          ? "usd"
-          : currenciesArray[1];
-
-        setFromCurrency(defaultFromCurrency);
-        setToCurrency(defaultToCurrency);
+        const response = await axios.get(`${apiUrl}/convert/area`, {
+          params: {
+            amount: isFromAmount ? amount : convertedAmount,
+            sourceUnit: isFromAmount ? sourceUnit : targetUnit,
+            targetUnit: isFromAmount ? targetUnit : sourceUnit,
+          },
+        });
+        if (response.data && response.data.convertedAmount !== undefined) {
+          const result = response.data.convertedAmount.toFixed(2);
+          if (isFromAmount) {
+            setConvertedAmount(result);
+          } else {
+            setAmount(result);
+          }
+        }
       } catch (error) {
-        console.error("Error fetching currencies:", error);
+        console.error("Error during conversion", error);
+        if (isFromAmount) {
+          setConvertedAmount("Error");
+        } else {
+          setAmount("Error");
+        }
       }
     };
 
-    fetchCurrencies();
-  }, [apiUrl]);
-
-  useEffect(() => {
-    if (fromCurrency && toCurrency && (amount || convertedAmount)) {
-      convertCurrency();
-    }
-  }, [fromCurrency, toCurrency, amount, convertedAmount, isFromAmount]);
+    performConversion();
+  }, [amount, sourceUnit, targetUnit, convertedAmount, isFromAmount, apiUrl]);
 
   const handleAmountChange = (e, isFrom) => {
+    const value = e.target.value;
     setIsFromAmount(isFrom);
     if (isFrom) {
-      setAmount(e.target.value);
-      setConvertedAmount("");
+      setAmount(value);
     } else {
-      setConvertedAmount(e.target.value);
-      setAmount("");
+      setConvertedAmount(value);
     }
   };
 
-  const swapCurrencies = () => {
-    setFromCurrency(toCurrency);
-    setToCurrency(fromCurrency);
-    setIsFromAmount(!isFromAmount);
-  };
+  const swapUnits = async () => {
+    console.log(`Swapping units: ${sourceUnit} to ${targetUnit}`);
+    const newSourceUnit = targetUnit;
+    const newTargetUnit = sourceUnit;
+    const newAmount = convertedAmount;
 
-  const convertCurrency = async () => {
-    console.log("Converting currency...");
+    setSourceUnit(newSourceUnit);
+    setTargetUnit(newTargetUnit);
+
     try {
-      const response = await fetch(
-        `${apiUrl}/convert?amount=${
-          isFromAmount ? amount : convertedAmount
-        }&sourceCurrency=${fromCurrency}&targetCurrency=${toCurrency}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      console.log("Conversion result:", data);
-      if (isFromAmount) {
-        setConvertedAmount(parseFloat(data.convertedAmount).toFixed(2));
-      } else {
-        setAmount(parseFloat(data.convertedAmount).toFixed(2));
+      const response = await axios.get(`${apiUrl}/convert/area`, {
+        params: {
+          amount: newAmount,
+          sourceUnit: newSourceUnit,
+          targetUnit: newTargetUnit,
+        },
+      });
+      if (response.data && response.data.convertedAmount !== undefined) {
+        setAmount(newAmount);
+        setConvertedAmount(response.data.convertedAmount.toFixed(2));
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("Error during conversion after swap", error);
+      setConvertedAmount("Error");
     }
   };
 
@@ -100,61 +98,58 @@ function CurrencyConverter() {
                     alt="Currency Converter Logo"
                     className="w-8 h-8 mr-2"
                   />
-                  <span className="font-bold">Currency & Crypto Converter</span>
+                  <span className="font-bold">Area Converter</span>
                 </a>
               </div>
             </div>
           </div>
         </div>
       </nav>
-      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-teal-200 via-teal-300 to-green-300">
+      <div className="flex items-center justify-center flex-grow px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-gray-300 via-purple-300 to-pink-300">
         <div className="w-full max-w-md p-5 my-4 bg-white shadow rounded-2xl md:my-8">
           <h1 className="mb-16 text-2xl font-bold text-center text-gray-800">
-            Currency & Crypto Converter
+            Area Converter
           </h1>
           <div className="flex items-center justify-between mb-4">
             <input
               type="number"
-              value={isFromAmount ? amount : convertedAmount || ""}
+              value={isFromAmount ? amount : convertedAmount}
               onChange={(e) => handleAmountChange(e, true)}
               className="w-2/5 border-gray-300 rounded-lg shadow-sm input input-bordered"
             />
             <select
-              value={fromCurrency}
-              onChange={(e) => setFromCurrency(e.target.value)}
+              value={sourceUnit}
+              onChange={(e) => setSourceUnit(e.target.value)}
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
-              {currencies.map((currency) => (
-                <option key={currency} value={currency}>
-                  {currency.toUpperCase()}
+              {units.map((unit) => (
+                <option key={unit} value={unit}>
+                  {unit.toUpperCase()}
                 </option>
               ))}
             </select>
           </div>
-
           <button
-            onClick={swapCurrencies}
+            onClick={swapUnits}
             className="px-2 py-1 mb-4 text-gray-800 bg-gray-200 rounded-full btn hover:bg-gray-300"
           >
             Swap
           </button>
-
           <div className="flex items-center justify-between">
             <input
               type="number"
-              value={!isFromAmount ? amount : convertedAmount || ""}
+              value={!isFromAmount ? amount : convertedAmount}
               onChange={(e) => handleAmountChange(e, false)}
               className="w-2/5 border-gray-300 rounded-lg shadow-sm input input-bordered"
-              readOnly={isFromAmount}
             />
             <select
-              value={toCurrency}
-              onChange={(e) => setToCurrency(e.target.value)}
+              value={targetUnit}
+              onChange={(e) => setTargetUnit(e.target.value)}
               className="w-1/3 border-gray-300 rounded-lg shadow-sm select select-bordered"
             >
-              {currencies.map((currency) => (
-                <option key={currency} value={currency}>
-                  {currency.toUpperCase()}
+              {units.map((unit) => (
+                <option key={unit} value={unit}>
+                  {unit.toUpperCase()}
                 </option>
               ))}
             </select>
@@ -164,12 +159,10 @@ function CurrencyConverter() {
       <footer className="bottom-0 w-full p-4 text-white bg-gray-800">
         <div className="grid max-w-6xl grid-cols-1 gap-4 mx-auto md:grid-cols-4">
           <div>
-            <h3 className="mb-2 text-lg font-bold">
-              Currency & Crypto Converter
-            </h3>
+            <h3 className="mb-2 text-lg font-bold">Speed Converter</h3>
             <p>
-              Convert both traditional and crypto currencies with real-time
-              rates and stay up-to-date with the global markets.
+              Quickly convert between different units of speed for travel,
+              sports, or any other purposes.
             </p>
           </div>
           <div>
@@ -255,4 +248,4 @@ function CurrencyConverter() {
   );
 }
 
-export default CurrencyConverter;
+export default AreaConverter;

@@ -19,11 +19,21 @@ public class ConversionController {
 
     private final CurrencyService currencyService;
     private final WeightConversionService weightConversionService;
+    private final LengthConversionService lengthConversionService;
+    private final SpeedConversionService speedConversionService;
+    private final AreaConversionService areaConversionService;
 
     @Autowired
-    public ConversionController(CurrencyService currencyService, WeightConversionService weightConversionService) {
+    public ConversionController(CurrencyService currencyService,
+            WeightConversionService weightConversionService,
+            LengthConversionService lengthConversionService,
+            SpeedConversionService speedConversionService,
+            AreaConversionService areaConversionService) {
         this.currencyService = currencyService;
         this.weightConversionService = weightConversionService;
+        this.lengthConversionService = lengthConversionService;
+        this.speedConversionService = speedConversionService;
+        this.areaConversionService = areaConversionService;
     }
 
     @GetMapping("/convert/currency")
@@ -40,6 +50,42 @@ public class ConversionController {
             @RequestParam @NotBlank String targetUnit) {
         try {
             double convertedAmount = weightConversionService.convertWeight(amount, sourceUnit, targetUnit);
+            return ResponseEntity.ok(Collections.singletonMap("convertedAmount", convertedAmount));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error in conversion: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/convert/length")
+    public ResponseEntity<?> convertLength(@RequestParam double amount,
+            @RequestParam @NotBlank String sourceUnit,
+            @RequestParam @NotBlank String targetUnit) {
+        try {
+            double convertedAmount = lengthConversionService.convertLength(amount, sourceUnit, targetUnit);
+            return ResponseEntity.ok(Collections.singletonMap("convertedAmount", convertedAmount));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error in conversion: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/convert/speed")
+    public ResponseEntity<?> convertSpeed(@RequestParam double amount,
+            @RequestParam @NotBlank String sourceUnit,
+            @RequestParam @NotBlank String targetUnit) {
+        try {
+            double convertedAmount = speedConversionService.convertSpeed(amount, sourceUnit, targetUnit);
+            return ResponseEntity.ok(Collections.singletonMap("convertedAmount", convertedAmount));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error in conversion: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/convert/area")
+    public ResponseEntity<?> convertArea(@RequestParam double amount,
+            @RequestParam @NotBlank String sourceUnit,
+            @RequestParam @NotBlank String targetUnit) {
+        try {
+            double convertedAmount = areaConversionService.convertArea(amount, sourceUnit, targetUnit);
             return ResponseEntity.ok(Collections.singletonMap("convertedAmount", convertedAmount));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error in conversion: " + e.getMessage());

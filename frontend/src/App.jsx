@@ -4,6 +4,9 @@ import Homepage from "./Homepage";
 import CurrencyConverter from "./CurrencyConverter";
 import ActualCurrencyConverter from "./ActualCurrencyConverter";
 import WeightConverter from "./WeightConversion";
+import SpeedConverter from "./SpeedConverter";
+import AreaConverter from "./AreaConverter";
+import LengthConverter from "./LengthConverter";
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
           element={<ActualCurrencyConverter />}
         />
         <Route path="/WeightConversion" element={<WeightConverter />} />
+        <Route path="/SpeedConversion" element={<SpeedConverter />} />
+        <Route path="/AreaConversion" element={<AreaConverter />} />
+        <Route path="/LengthConversion" element={<LengthConverter />} />
       </Routes>
     </div>
   );
