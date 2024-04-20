@@ -15,10 +15,30 @@ public class WeightConversionService {
 
     private static Map<String, Map<String, Double>> initConversionRates() {
         Map<String, Map<String, Double>> rates = new HashMap<>();
-        rates.put("kg", Map.of("g", 1000.0, "lb", 2.20462, "oz", 35.274));
-        rates.put("g", Map.of("kg", 0.001, "lb", 0.00220462, "oz", 0.035274));
-        rates.put("lb", Map.of("kg", 0.453592, "g", 453.592, "oz", 16.0));
-        rates.put("oz", Map.of("kg", 0.0283495, "g", 28.3495, "lb", 0.0625));
+        Map<String, Double> kgConversions = new HashMap<>();
+        kgConversions.put("g", 1000.0);
+        kgConversions.put("lb", 2.20462);
+        kgConversions.put("oz", 35.274);
+        rates.put("kg", kgConversions);
+
+        Map<String, Double> gConversions = new HashMap<>();
+        gConversions.put("kg", 0.001);
+        gConversions.put("lb", 0.00220462);
+        gConversions.put("oz", 0.035274);
+        rates.put("g", gConversions);
+
+        Map<String, Double> lbConversions = new HashMap<>();
+        lbConversions.put("kg", 0.453592);
+        lbConversions.put("g", 453.592);
+        lbConversions.put("oz", 16.0);
+        rates.put("lb", lbConversions);
+
+        Map<String, Double> ozConversions = new HashMap<>();
+        ozConversions.put("kg", 0.0283495);
+        ozConversions.put("g", 28.3495);
+        ozConversions.put("lb", 0.0625);
+        rates.put("oz", ozConversions);
+
         return rates;
     }
 
