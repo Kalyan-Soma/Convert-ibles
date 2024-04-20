@@ -11,19 +11,19 @@ function WeightConverter() {
   const [convertedAmount, setConvertedAmount] = useState("");
   const [isFromAmount, setIsFromAmount] = useState(true);
 
+  const apiUrl =
+    import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:8080";
+
   useEffect(() => {
     const performConversion = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/convert/weight`,
-          {
-            params: {
-              amount: isFromAmount ? amount : convertedAmount,
-              sourceUnit: isFromAmount ? sourceUnit : targetUnit,
-              targetUnit: isFromAmount ? targetUnit : sourceUnit,
-            },
-          }
-        );
+        const response = await axios.get(`${apiUrl}/convert/weight`, {
+          params: {
+            amount: isFromAmount ? amount : convertedAmount,
+            sourceUnit: isFromAmount ? sourceUnit : targetUnit,
+            targetUnit: isFromAmount ? targetUnit : sourceUnit,
+          },
+        });
         if (response.data && response.data.convertedAmount !== undefined) {
           const result = response.data.convertedAmount.toFixed(2);
           if (isFromAmount) {
@@ -43,7 +43,7 @@ function WeightConverter() {
     };
 
     performConversion();
-  }, [amount, sourceUnit, targetUnit, convertedAmount, isFromAmount]);
+  }, [amount, sourceUnit, targetUnit, convertedAmount, isFromAmount, apiUrl]);
 
   const handleAmountChange = (e, isFrom) => {
     const value = e.target.value;
